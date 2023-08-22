@@ -1,0 +1,10 @@
+﻿<form asp-controller="Home" asp-action="Search" method="get" class="search-form">
+    <input type="text" placeholder="Job title or keywords" name="keywords" value="@ViewData["Keywords"]" />
+    <input type="text" placeholder="Location" name="location" value="@ViewData["Location"]" />
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="sortBy" value="relevance" />
+    <input type="hidden" name="sortDir" value="desc" />
+    <button type="submit">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+</form>

@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model JobsViewModel
+@{
+	ViewData["Title"] = Model.PageTitle;
+	ViewData["Keywords"] = Model.Keywords;
+	ViewData["Location"] = Model.Location;
+}
+
+<h1>@ViewData["Title"]</h1>
+@if (Model.PageTitle == "Search")
+{
+	<form asp-controller="Home" asp-action="Search" method="get">
+		<input type="hidden" name="keywords" value="@Model.Keywords">
+		<input type="hidden" name="location" value="@Model.Location">
+		<input type="hidden" name="page" value="1">
+		<select name="sortBy">
+			<option value="relevance">Relevance</option>
+			<option value="date">Date</option>
+			<option value="salary">Salary</option>
+		</select>
+		<select name="sortDir">
+			<option value="desc">Descending</option>
+			<option value="asc">Ascending</option>
+		</select>
+		<button type="submit">Sort</button>
+	</form>
+}
+
+<div id="jobs">
+@foreach (var job in Model.Jobs)
+{
+	<div class="job">
+		<div class="job-title">
+			<a href="@job.URL" target="_blank" rel="noreferrer noopener">@job.Title</a>
+		</div>
+		<div>@job.Company</div>
+		<div>@job.Location</div>
+		@if (job.SalaryMin > 0 && job.SalaryMax > 0)
+		{
+			<div>$@job.SalaryMin - $@job.SalaryMax</div>
+		}
+		<div class="job-description">@job.Description</div>
+		<div class="job-footer">
+			<div class="job-date">@job.CreatedDate</div>
+			
+			@if (SignInManager.IsSignedIn(User))
+			{
+				<div class="myJobs-form-container">
+					<div class="loader" hidden></div>
+
+					@if (job.SavingUsers.Contains(await UserManager.GetUserAsync(User)))
+					{
+						// If the current user already has this job saved, then hide the Save form
+
+						<form asp-controller="MyJobs" asp-action="Unsave" method="post" class="unsave-form">
+							<input type="hidden" name="title" value="@job.Title">
+							<input type="hidden" name="url" value="@job.URL">
+							<input type="hidden" name="company" value="@job.Company">
+							<input type="hidden" name="location" value="@job.Location">
+							<input type="hidden" name="salaryMin" value="@job.SalaryMin">
+							<input type="hidden" name="salaryMax" value="@job.SalaryMax">
+							<input type="hidden" name="description" value="@job.Description">
+							<input type="hidden" name="createdDate" value="@job.CreatedDate">
+							<button type="submit">Unsave</button>
+						</form>
+						<form asp-controller="MyJobs" asp-action="Save" method="post" class="save-form" hidden>
+							<input type="hidden" name="title" value="@job.Title">
+							<input type="hidden" name="url" value="@job.URL">
+							<input type="hidden" name="company" value="@job.Company">
+							<input type="hidden" name="location" value="@job.Location">
+							<input type="hidden" name="salaryMin" value="@job.SalaryMin">
+							<input type="hidden" name="salaryMax" value="@job.SalaryMax">
+							<input type="hidden" name="description" value="@job.Description">
+							<input type="hidden" name="createdDate" value="@job.CreatedDate">
+							<button type="submit">Save</button>
+						</form>
+					}
+					else
+					{
+						// Otherwise, hide the Unsave form
+
+						<form asp-controller="MyJobs" asp-action="Unsave" method="post" class="unsave-form" hidden>
+							<input type="hidden" name="title" value="@job.Title">
+							<input type="hidden" name="url" value="@job.URL">
+							<input type="hidden" name="company" value="@job.Company">
+							<input type="hidden" name="location" value="@job.Location">
+							<input type="hidden" name="salaryMin" value="@job.SalaryMin">
+							<input type="hidden" name="salaryMax" value="@job.SalaryMax">
+							<input type="hidden" name="description" value="@job.Description">
+							<input type="hidden" name="createdDate" value="@job.CreatedDate">
+							<button type="submit">Unsave</button>
+						</form>
+						<form asp-controller="MyJobs" asp-action="Save" method="post" class="save-form">
+							<input type="hidden" name="title" value="@job.Title">
+							<input type="hidden" name="url" value="@job.URL">
+							<input type="hidden" name="company" value="@job.Company">
+							<input type="hidden" name="location" value="@job.Location">
+							<input type="hidden" name="salaryMin" value="@job.SalaryMin">
+							<input type="hidden" name="salaryMax" value="@job.SalaryMax">
+							<input type="hidden" name="description" value="@job.Description">
+							<input type="hidden" name="createdDate" value="@job.CreatedDate">
+							<button type="submit">Save</button>
+						</form>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}
+</div>
+
+@if (Model.PageTitle == "Search")
+{
+	<div id="paginator">
+		@if (Model.PageNum > 1)
+		{
+			<form asp-controller="Home" asp-action="Search" method="get">
+				<input type="hidden" name="keywords" value="@Model.Keywords">
+				<input type="hidden" name="location" value="@Model.Location">
+				<input type="hidden" name="page" value="@(Model.PageNum - 1)">
+				<input type="hidden" name="sortBy" value="@Model.SortBy">
+				<input type="hidden" name="sortDir" value="@Model.SortDir">
+				<button type="submit">Prev</button>
+			</form>
+		}
+		<span>| @Model.PageNum |</span>
+		<form asp-controller="Home" asp-action="Search" method="get">
+			<input type="hidden" name="keywords" value="@Model.Keywords">
+			<input type="hidden" name="location" value="@Model.Location">
+			<input type="hidden" name="page" value="@(Model.PageNum + 1)">
+			<input type="hidden" name="sortBy" value="@Model.SortBy">
+			<input type="hidden" name="sortDir" value="@Model.SortDir">
+			<button type="submit">Next</button>
+		</form>
+	</div>
+}
+
+@section Scripts {
+	<script type="text/javascript">
+		const sortBySelect = document.querySelector('select[name=sortBy]');
+		sortBySelect.value = '@Model.SortBy';
+
+		const sortDirSelect = document.querySelector('select[name=sortDir]');
+		sortDirSelect.value = '@Model.SortDir';
+	</script>
+}

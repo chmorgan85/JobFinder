@@ -1,0 +1,193 @@
+body {
+    margin: 0;
+    background-color: #171717;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    margin: 1rem;
+}
+
+header {
+    border-bottom: 1px solid #404040;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+#login-partial {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+    #login-partial button:hover {
+        text-decoration: underline;
+    }
+
+#index-nav {
+    font-size: 2rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+a {
+    color: #75b6e7;
+    text-decoration: none;
+}
+    a:hover {
+        text-decoration: underline;
+    }
+
+#jobs a:visited {
+    color: purple;
+}
+
+input[type=email],
+input[type=password] {
+    background-color: inherit;
+    border: 1px solid #404040;
+    border-radius: 30px;
+    padding: 0.25rem 0.5rem;
+    color: inherit;
+    outline: none;
+}
+
+.auth-form-input {
+    margin: 0 0 1rem 0;
+}
+
+input[type=text] {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    color: inherit;
+    flex: 1;
+}
+
+input[name=keywords] {
+    border-right: 1px solid #404040;
+    margin: 0 1rem 0 0;
+}
+
+.search-form {
+    display: flex;
+    border: 1px solid #404040;
+    border-radius: 30px;
+    padding: 0.25rem 0.5rem;
+}
+
+button {
+    font-family: inherit;
+    background-color: inherit;
+    color: #75b6e7;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+#index-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+#index-title {
+    font-size: 4rem;
+}
+
+#jobs {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem;
+    gap: 1rem;
+}
+
+.job {
+    width: 450px;
+    border: 1px solid #404040;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.job-title {
+    font-weight: bold;
+    margin: 0 0 1rem 0;
+}
+
+.job-description {
+    margin: 1rem 0 1rem 0;
+    height: 12rem;
+    overflow: auto;
+}
+
+.job-collapse {
+    display: flex;
+    justify-content: center;
+    color: #75b6e7;
+}
+
+.show-more,
+.show-less {
+    cursor: pointer;
+}
+
+.job-date {
+    color: gray;
+}
+
+.job-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.loader {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #75b6e7;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#auth {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#paginator {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 1rem 0;
+}
+
+.field-validation-error {
+    color: red;
+}
+
+select,
+option {
+    background-color: #171717;
+    color: inherit;
+}
